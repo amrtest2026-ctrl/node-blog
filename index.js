@@ -57,7 +57,6 @@ app.use((err, req, res, next) => {
 
   res.status(500).json({ status: "error", message: err.message });
 });
-//mongo conect
 mongoose
   .connect(process.env.MONGO_URL)
   .then(async () => {
