@@ -58,28 +58,30 @@ app.use((err, req, res, next) => {
   res.status(500).json({ status: "error", message: err.message });
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`Example app listening on port ${process.env.PORT || 3000}`);
-  mongoose
-    .connect(process.env.MONGO_URL)
-    .then(async () => {
-      const user = await User.findOne({ email:process.env.FIRST_ADMIN_EMAIL });
-      if (!user) {
-        const saltRounds = 10;
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(async () => {
+    const user = await User.findOne({ email:process.env.FIRST_ADMIN_EMAIL });
+    if (!user) {
+      const saltRounds = 10;
 
-        const hashedPassword = await bcrypt.hash(process.env.FIRST_ADMIN_PASSWORD, saltRounds);
+      const hashedPassword = await bcrypt.hash(process.env.FIRST_ADMIN_PASSWORD, saltRounds);
 
-        await User.create({
-          name:process.env.FIRST_ADMIN_NAME,
-          email:process.env.FIRST_ADMIN_EMAIL ,
-          password: hashedPassword,
-          role: "admin",
-        });
-      }
-      console.log("connected to mongodb");
-    })
-    .catch((error) => console.log("filed connect to mongodb", error));
-});
+      await User.create({
+        name:process.env.FIRST_ADMIN_NAME,
+        email:process.env.FIRST_ADMIN_EMAIL ,
+        password: hashedPassword,
+        role: "admin",
+      });
+    }
+    console.log("connected to mongodb");
+  })
+  .catch((error) => console.log("filed connect to mongodb", error));
+// app.listen(process.env.PORT || 3000, () => {
+//   console.log(`Example app listening on port ${process.env.PORT || 3000}`);
+// });
+
+module.exports=app
 
 // curd  user
 // curd  post
