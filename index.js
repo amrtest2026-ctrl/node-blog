@@ -25,6 +25,9 @@ app.use(limiter)
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
 app.use("/auth", authRoutes);
+app.use("/",(req,res)=>{
+  res.send("server running")
+})
 
 app.use((err, req, res, next) => {
   console.log(err);
